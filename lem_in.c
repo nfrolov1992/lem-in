@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-t_data	*base_setting_mod(t_data_room *rooms, t_data_link *links, t_data_ways *ways)
+t_data	*base_setting_mod(t_data_room *rooms, t_data_link *links, t_data_ways *ways) // ебучий костыль нужен рефакторинг очень, вполне себе можно быстро добить.
 {
 	t_data_room			*rooms_tm;
 	t_data_link			*links_tm;
@@ -193,28 +193,28 @@ void	mod_way(t_ways *ways_mod, t_data_ways *ways_all)
 
 int		main(void)
 {
-	t_data_input	*data_input; 
-	t_data			*data_lim;
-	t_data_ways		*data_ways;
-	t_data_ways		*data_ways_tm;
+	t_data_input	*data_input; // исходной данные карты (все вместе)
+	t_data			*data_lim; // распарсенные данные карты в комнаты и ссылки со своим набором данных
+	t_data_ways		*data_ways; // текущий найденный путь
+	t_data_ways		*data_ways_tm; // все найденные пути, итого
 	int				count_way; // найти количество путей макс
 
 	count_way = 0;
-	data_input = new_data_inputlist(); // предварительный парсинг исходных данных в переменную 
-	data_ways = new_ways_datalist();
+	data_input = new_data_inputlist(); 
+	data_ways = new_ways_datalist();  
 	data_ways_tm = data_ways;
 	// Получить данные из файла карты в листы 
-	data_lim = get_data_input(data_input);
-	count_way = data_lim->count_way / 2;
+	data_lim = get_data_input(data_input); // предварительный парсинг исходных данных в переменную
+	count_way = data_lim->count_way / 2; // поиск максимально возможных путей, расчет по начальной и конечной комнате
 	//-----------------------------------
 
-	bellamna_ford(data_lim->rooms, data_lim->links);
-	data_ways->way = save_way(data_lim->rooms);
+	bellamna_ford(data_lim->rooms, data_lim->links); // алгоритм беллмана форда ищет путь в графе с отрицательными весами
+	data_ways->way = save_way(data_lim->rooms); // сохраняем путь
 	//проверка пути/путей, но в цикле только
 	
 	//-----------------------------------
 	//базовые настройки
-	data_lim = base_setting(data_lim->rooms, data_lim->links, data_ways->way);
+	data_lim = base_setting(data_lim->rooms, data_lim->links, data_ways->way); // с учетом некоторых поправок
 	//-----------------------------------
 	data_ways->next_way = new_ways_datalist();
 	data_ways = data_ways->next_way;
@@ -235,10 +235,8 @@ int		main(void)
 		}
 		if (data_ways->bad_way == 0 && data_ways->mod > 0)
 		{// пересечений нет, есть модификация пути
-		// собираем все пути после будем модифицировать если нет плохих путей
-		// уже за циклом while
 			ft_printf("hello world\n");
-			mod_way(data_ways->way, data_ways_tm);
+			mod_way(data_ways->way, data_ways_tm); // модифицируем путь
 			//data_ways = data_ways_tm;
 			data_lim = base_setting_mod(data_lim->rooms, data_lim->links, data_ways_tm);
 			data_ways->next_way = new_ways_datalist();
@@ -254,7 +252,7 @@ int		main(void)
 			data_ways->next_way = new_ways_datalist();
 			data_ways = data_ways->next_way;
 		}
-		if (data_ways->bad_way == 1)
+		if (data_ways->bad_way == 1) // необходимо проработать внутренности и более корректно определять пересечени пути
 		{// если есть пересечение, путь бракуем, что делать дальше решим
 			data_lim = base_setting_bad_way(data_lim->rooms, data_lim->links, data_ways->way);
 			ft_printf("gg\n");
