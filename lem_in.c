@@ -193,7 +193,7 @@ void	mod_way(t_ways *ways_mod, t_data_ways *ways_all)
 
 int		main(void)
 {
-	t_data_input	*data_input;
+	t_data_input	*data_input; 
 	t_data			*data_lim;
 	t_data_ways		*data_ways;
 	t_data_ways		*data_ways_tm;

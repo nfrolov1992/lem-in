@@ -1,0 +1,50 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(lldb) Addition",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/a.out",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+		},
+
+		{
+			"name": "(lldb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/a.out",
+			"args": [],
+			"stopAtEntry": true,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb",
+			// "logging": {
+			// 	"engineLogging": true,
+			// 	"trace": true,
+			// 	"traceResponse": true
+			// },
+			// "targetArchitecture": "x64",
+			// "miDebuggerPath": "/Users/mozzart/.vscode/extensions/ms-vscode.cpptools-0.26.3-insiders2/debugAdapters/lldb/bin/lldb-mi"
+		},
+		{
+			"name": "(lldb) Launch fillit",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/fillit",
+			"args": [
+				"${workspaceFolder}/tests/test1"
+			],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb"
+		}
+	]
+}
