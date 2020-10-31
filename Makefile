@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 S = 
-SS = $(S)lem_in.c $(S)get_data_input.c $(S)new_data_inputlist.c $(S)parse_data.c $(S)bellam_ford.c $(S)save_way.c $(S)base_setting.c $(S)save_new_way.c $(S)base_setting_bad_way.c $(S)run_lim_run.c
+SS = $(S)lem_in.c $(S)get_data_input.c $(S)new_data_inputlist.c $(S)parse_data.c $(S)bellam_ford.c $(S)save_way.c $(S)base_setting.c $(S)run_lim_run.c
 H = -I libft/includes -I libft/ -I .
 NAME = lem_in
 CC = clang

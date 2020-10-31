@@ -7,8 +7,10 @@ t_ways	*save_way(t_data_room *rooms)
 	t_data_room		*room_tm;
 	int				begin;
 	char			*baza;
+	int				length;
 
 	begin = 0;
+	length = 0;
 	ways = new_wayslist();
 	ways_tm = ways;
 	room_tm = rooms;
@@ -28,6 +30,7 @@ t_ways	*save_way(t_data_room *rooms)
 			ways->way = new_wayslist();
 			ways = ways->way;
 			rooms = room_tm;
+			length = length + 2;
 		}
 		else if (baza != NULL && ft_strcmp(baza, rooms->name) == 0)
 		{
@@ -39,15 +42,18 @@ t_ways	*save_way(t_data_room *rooms)
 			}
 			baza = rooms->from_link;
 			ways->name_room_way = baza;
-			//создаем ссылку на предыдущее значение
 			ways->way_prev = new_wayslist();
 			ways->way_prev->name_room_way = rooms->name;
 			ways->way = new_wayslist();
 			ways = ways->way;
 			rooms = room_tm;
+			length++;
 		}
+		else if (rooms->name == NULL)
+			return (NULL);
 		else
 			rooms = rooms->next;
 	}
+	ways_tm->length_way = length;
 	return (ways_tm);
 }

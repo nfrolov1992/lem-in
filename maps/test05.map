@@ -1,0 +1,21 @@
+11
+# rooms
+0 250 150
+1 550 150
+2 550 450
+##start
+start 250 450
+##end
+end 850 450
+5 850 150
+# links
+0-1
+0-2
+0-start
+1-5
+2-start
+2-end
+2-5
+end-5
+start-1
+1-end

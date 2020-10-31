@@ -68,10 +68,11 @@ t_data_ways	*new_ways_datalist(void)
 
 	if ((new = (t_data_ways *)malloc(sizeof(t_data_ways))))
 	{
-		new->mod = 0;
-		new->bad_way = 0;
+		new->length_way = 0;
+		new->first_way = 0;
 		new->way = NULL;
 		new->next_way = NULL;
+		new->prev_way = NULL;
 	}
 	return (new);
 }
@@ -84,25 +85,13 @@ t_ways	*new_wayslist(void)
 	{
 		new->name_room_way = NULL;
 		new->name_lim = NULL;
+		new->length_way = 0;
 		new->end = 0;
 		new->no_use = 0;
 		new->way = NULL;
 		new->start = 0;
 		new->lim = 0;
 		new->way_prev = NULL;
-	}
-	return (new);
-}
-
-t_check_ways	*new_check_way(void)
-{
-	t_check_ways *new;
-
-	if ((new = (t_check_ways *)malloc(sizeof(t_check_ways))))
-	{
-		new->use_chnge_way = 0;
-		new->way1 = NULL;
-		new->way2 = NULL;
 	}
 	return (new);
 }

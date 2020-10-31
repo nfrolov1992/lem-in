@@ -3,14 +3,12 @@
 
 # include "libft/libft.h"
 
-// структура данных из подаваемой карты без парсинга (далее эта структура преобразуется используемы данные)
 typedef struct				s_data_input
 {
 	char					*str;
 	struct s_data_input		*next;
 }							t_data_input;
 
-//структура данных комната
 typedef struct				s_data_room
 {
 	char					*name;
@@ -24,7 +22,6 @@ typedef struct				s_data_room
 	struct s_data_room		*next;
 }							t_data_room;
 
-//структура даных ссылка
 typedef struct				s_data_link
 {
 	char					*from;
@@ -37,8 +34,6 @@ typedef struct				s_data_link
 	struct s_data_link		*next;
 }							t_data_link;
 
-
-//общая структура содержащая ссылку и комнату
 typedef struct				s_data
 {
 	struct s_data_room		*rooms;
@@ -51,6 +46,7 @@ typedef struct				s_ways
 	char					*name_room_way;
 	char					*name_lim;
 	int						end;
+	int						length_way;
 	int						start;
 	int						lim;
 	int						no_use;
@@ -60,18 +56,13 @@ typedef struct				s_ways
 
 typedef struct				s_data_ways
 {
-	int						mod;
-	int						bad_way;
+	int						length_way;
+	int						first_way;
 	struct s_ways			*way;
 	struct s_data_ways		*next_way;
+	struct s_data_ways		*prev_way;
 }							t_data_ways;
 
-typedef struct				s_check_ways
-{
-	int						use_chnge_way;
-	struct s_ways			*way1;
-	struct s_ways			*way2;
-}							t_check_ways;
 
 t_data_input				*new_data_inputlist(void);
 t_data						*get_data_input(t_data_input *data_input);
@@ -84,10 +75,6 @@ t_data_ways					*new_ways_datalist(void);
 t_ways						*new_wayslist(void);
 t_ways						*save_way(t_data_room *rooms);
 t_data						*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways);
-t_ways						*save_new_way(t_data_room *rooms, t_data_ways *data_ways_tm, t_data_ways *data_ways);
-t_check_ways				*new_check_way(void);
-t_data						*base_setting_bad_way(t_data_room *rooms, t_data_link *links, t_ways *ways);
 void						run_lim_run(int count_lim, t_data_ways *ways);
-
 
 #endif

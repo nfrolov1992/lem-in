@@ -1,16 +1,14 @@
 #include "lem_in.h"
 
-//выполняю поиск пути
 void			bellamna_ford(t_data_room *rooms, t_data_link *links)
 {
-	t_data_room *room_tmp;
-	t_data_link *links_tmp;
-	int			change;
+	t_data_room		*room_tmp;
+	t_data_link		*links_tmp;
+	int				change;
 
 	room_tmp = rooms;
 	links_tmp = links;
 	change = 0;
-
 	while (links->next != NULL)
 	{
 		if (links->act == 1)
