@@ -44,7 +44,7 @@ void			run_lim_run(int count_lim, t_data_ways *data_ways)
 			data_ways = data_ways_tm;
 			ft_printf("\n");
 		}
-		if (data_ways->length_way != 0 && ((data_ways->first_way == 1) || is_go(data_ways, lim_start))) // добавить в условие && is_go()
+		if (data_ways->length_way != 0) // добавить в условие && is_go()
 		{
 			ways_tm = data_ways->way;
 			while (ways_tm->way->start != 1)
@@ -62,7 +62,7 @@ void			run_lim_run(int count_lim, t_data_ways *data_ways)
 					ft_printf("L%s-%s ", ways_tm->name_lim, ways_tm->name_room_way);
 				}
 				// если подошли к началу
-				else if (ways_tm->way->way->start == 1 && lim_start != 0)
+				else if (ways_tm->way->way->start == 1 && lim_start != 0 && ((data_ways->first_way == 1) || is_go(data_ways, lim_start)))
 				{
 					ways_tm->name_lim = ft_itoa(lim_start);
 					lim_start--;
