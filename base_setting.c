@@ -1,16 +1,14 @@
 #include "lem_in.h"
 
-t_data	*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways)
+t_data	*base_setting(t_data *data_lim, t_ways *ways)
 {
-	t_data_room		*rooms_tm;
-	t_data_link		*links_tm;
+	t_data_room		*rooms;
+	t_data_link		*links;
 	t_ways			*ways_tm;
-	t_data			*data_lim;
 
-	rooms_tm = rooms;
-	links_tm = links;
+	rooms = data_lim->rooms;
+	links = data_lim->links;
 	ways_tm = ways;
-	data_lim = new_datalist();
 	while (links->next != NULL)
 	{
 		while (ways->way->name_room_way != NULL)
@@ -42,7 +40,5 @@ t_data	*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways)
 		}
 		links = links->next;
 	}
-	data_lim->rooms = rooms_tm;
-	data_lim->links = links_tm;
 	return (data_lim);
 }

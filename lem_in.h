@@ -74,7 +74,8 @@ void						bellamna_ford(t_data_room *rooms, t_data_link *links);
 t_data_ways					*new_ways_datalist(void);
 t_ways						*new_wayslist(void);
 t_ways						*save_way(t_data_room *rooms);
-t_data						*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways);
+t_data						*base_setting(t_data *data_lim, t_ways *ways);
 void						run_lim_run(int count_lim, t_data_ways *ways);
+void						terminate(char *message);
 
 #endif

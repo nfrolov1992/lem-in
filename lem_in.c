@@ -12,7 +12,7 @@ static t_data_ways		*go_search_way(t_data *data_lim, t_data_ways *data_ways, int
 		if (data_ways->way == NULL)
 			break;
 		data_ways->length_way = data_ways->way->length_way - 1;
-		data_lim = base_setting(data_lim->rooms, data_lim->links, data_ways->way);
+		data_lim = base_setting(data_lim, data_ways->way);
 		data_ways->next_way = new_ways_datalist();
 		data_ways->next_way->prev_way = data_ways;
 		data_ways = data_ways->next_way;

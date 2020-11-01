@@ -53,12 +53,13 @@ t_data	*new_datalist(void)
 {
 	t_data *new;
 
-	if ((new = (t_data *)malloc(sizeof(t_data))))
-	{
-		new->rooms = NULL;
-		new->links = NULL;
-		new->count_way = 0;
-	}
+	if (!(new = (t_data *)malloc(sizeof(t_data))))
+		terminate("Memory allocation error");
+	if (!(new->rooms = new_data_roomlist()))
+		terminate("Memory allocation error");
+	if (!(new->links = new_data_linklist()))
+		terminate("Memory allocation error");
+	new->count_way = 0;
 	return (new);
 }
 
