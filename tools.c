@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 20:41:29 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/10/29 20:51:44 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/03 15:20:44 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,41 @@
 
 void	terminate(char *message)
 {
+	write(1, "\x1B[31m", 5);
 	ft_putendl(message);
 	exit(1);
+}
+
+// returns positive int or -1 if overflow or bad format
+int		is_positive_int(char *str)
+{
+	unsigned long	res;
+
+	res = 0;
+	if (str == NULL)
+		return (-1);
+	while (*str != '\0')
+	{
+		if (!ft_isdigit(*str))
+			return (-1);
+		res = res * 10 + (*str - '0');
+		if (res > 2147483647)
+			return (-1);
+		str++;
+	}
+	return ((int)res);
+}
+
+void			print_farm(t_data *data_lim)
+{
+	t_data_room	*rooms;
+	// t_data_link	*links;
+
+	rooms = data_lim->rooms;
+	while (rooms->next != NULL)
+	{
+		ft_printf("%6s %3s %3s %d %d length:%d\n", rooms->name, rooms->coord_x, rooms->coord_y, rooms->start, rooms->end, rooms->length);
+		rooms = rooms->next;
+	}
+	return ;
 }

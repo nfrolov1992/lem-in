@@ -1,181 +1,218 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_data.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/29 19:24:08 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/10/30 00:14:01 by fprovolo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "lem_in.h"
 
-int			count_ways(t_data_link *links)
-{
-	int			count;
+//объеденяю комнат и ссылки в сылки
+// t_data			*union_room_link(t_data *data_lim)
+// {
+// 	t_data_room *rooms;
+// 	t_data_link *links;
+// 	t_data_room *from;
+// 	t_data_room *to;
 
-	count = 0;
-	while (links->next != NULL)
+// 	rooms = data_lim->rooms;
+// 	links = data_lim->links;
+// 	while (links->next != NULL)
+// 	{
+// 		while (rooms->next != NULL)
+// 		{
+// 			if (ft_strcmp(rooms->name, links->from) == 0)
+// 			{
+// 				from = rooms;
+// 				links->from_room = from;
+// 				links->next->to_room = from;
+// 			}
+// 			else if (ft_strcmp(rooms->name, links->to) == 0)
+// 			{
+// 				to = rooms;
+// 				links->to_room = to;
+// 				links->next->from_room = to;
+// 			}
+// 			if (links->from_room != NULL && links->to_room != NULL)
+// 				break;
+// 			rooms = rooms->next;
+// 		}
+// 		rooms = data_lim->rooms;
+// 		links = links->next->next;
+// 	}
+// 	links = data_lim->links;
+// 	while (links->next != NULL)
+// 	{
+// 		if (links->from_room->start == 1 || links->from_room->end == 1)
+// 			data_lim->count_way++;
+// 		links = links->next;
+// 	}
+// 	return (data_lim);
+// }
+
+// t_data_link		*parse_link(char *str, t_data *data_lim)
+// {
+// 	char			**line;
+// 	t_data_link		*links;
+// 	char			*l1;
+// 	char			*l2;
+
+// 	links = data_lim->links;
+// 	line = ft_strsplit(str, '-');
+// 	if (line[0] == NULL || line[1] == NULL || line[3] != NULL ||
+// 			ft_strlen(line[0]) == 0 || ft_strlen(line[1]) == 0)
+// 		terminate("Bad map: invalid link");
+
+// 	l1 = *line;
+// 	line++;
+// 	l2 = *line;
+
+// 	if (ft_strcmp(l1, start) == 0)
+// 	{
+// 		links->from = l1;
+// 		links->to = l2;
+// 		links->next = new_data_linklist();
+// 		links = links->next;
+// 		links->from = l2;
+// 		links->to = l1;
+// 		links->act = 0;
+// 	}
+// 	else if (ft_strcmp(l2, start) == 0)
+// 	{
+// 		links->from = l2;
+// 		links->to = l1;
+// 		links->next = new_data_linklist();
+// 		links = links->next;
+// 		links->from = l1;
+// 		links->to = l2;
+// 		links->act = 0;
+// 	}
+// 	else if (ft_strcmp(l1, end) == 0)
+// 	{
+// 		links->from = l2;
+// 		links->to = l1;
+// 		links->next = new_data_linklist();
+// 		links = links->next;
+// 		links->from = l1;
+// 		links->to = l2;
+// 		links->act = 0;
+// 	}
+// 	else if (ft_strcmp(l2, end) == 0)
+// 	{
+// 		links->from = l1;
+// 		links->to = l2;
+// 		links->next = new_data_linklist();
+// 		links = links->next;
+// 		links->from = l2;
+// 		links->to = l1;
+// 		links->act = 0;
+// 	}
+// 	else
+// 	{
+// 		links->from = l1;
+// 		links->to = l2;
+// 		links->next = new_data_linklist();
+// 		links = links->next;
+// 		links->from = l2;
+// 		links->to = l1;
+// 	}
+	
+
+// 	return (data_lim);
+// }
+
+
+
+static void		validate_room(char **line, t_data_room *rooms)
+{
+	if (line[1] == NULL || line[2] == NULL || line[3] != NULL)
+		terminate("Bad map: wrong number of fields in room definition");
+	if (ft_strlen(line[0]) == 0)
+		terminate("Bad map: missing room name");
+	if ((is_positive_int(line[1]) < 0) || (is_positive_int(line[2]) < 0))
 	{
-		if (links->from_room->start == 1 || links->from_room->end == 1)
-			count++;
-		links = links->next;
+		ft_printf("%s %s %s\n", line[0], line[1], line[2]);
+		terminate("Bad map: wrong room coordinates");
 	}
-	return (count);
+	while (rooms->next != NULL)
+	{
+		if (ft_strcmp(rooms->name, line[0]) == 0)
+			terminate("Bad map: room name duplicates");
+		if (ft_strcmp(rooms->coord_x, line[1]) == 0 && ft_strcmp(rooms->coord_y, line[2]) == 0)
+			terminate("Bad map: room coordinates duplicate");
+		rooms = rooms->next;
+	}
+	return ;
 }
 
-t_data		*union_room_link(t_data *data_lim)
+static void			push_room(char *str, int start_end, t_data_room *rooms)
 {
-	t_data_room *rooms;
-	t_data_link *links;
-
-	rooms = data_lim->rooms;
-	links = data_lim->links;
-	while (links->next != NULL)
-	{
-		while (rooms != NULL)
-		{
-			if (ft_strcmp(rooms->name, links->from) == 0)
-				links->from_room = rooms;
-			else if (ft_strcmp(rooms->name, links->to) == 0)
-				links->to_room = rooms;
-			if (links->from_room != NULL && links->to_room != NULL)
-				break ;
-			rooms = rooms->next;
-		}
-		rooms = data_lim->rooms;
-		links = links->next;
-	}
-	data_lim->count_way = count_ways(data_lim->links);
-	return (data_lim);
-}
-
-t_data_link	*parse_link(char *str, t_data_link *links, char *start, char *end)
-{
-	char		**room;
-	t_data_link	*links_tmp;
-
-	links_tmp = links;
-	room = ft_strsplit(str, '-');
-	links->from = room[0];
-	links->to = room[1];
-	links->next = new_data_linklist();
-	links->next->from = room[1];
-	links->next->to = room[0];
-	if (ft_strcmp(room[0], start) == 0)
-		links->next->act = 0;
-	else if (ft_strcmp(room[1], start) == 0)
-		links->act = 0;
-	else if (ft_strcmp(room[0], end) == 0)
-		links->act = 0;
-	if (ft_strcmp(room[1], end) == 0)
-		links->next->act = 0;
-	return (links_tmp);
-}
-
-int			is_room(char **line)
-{
-	char		*ptr;
-
-	if (line[0] == NULL || line[1] == NULL || line[2] == NULL
-			|| line[3] != NULL)
-		return (0);
-	if (ft_strlen(line[0]) == 0 || ft_strlen(line[1]) == 0
-			|| ft_strlen(line[2]) == 0)
-		return (0);
-	ptr = line[1];
-	while (*ptr != '\0')
-	{
-		if (!(ft_isdigit(*ptr)))
-			return (0);
-		ptr++;
-	}
-	ptr = line[2];
-	while (*ptr != '\0')
-	{
-		if (!(ft_isdigit(*ptr)))
-			return (0);
-		ptr++;
-	}
-	return (1);
-}
-
-t_data_room	*parse_room(char *str, int start_end, t_data_room *rooms_tmp)
-{
-	char		**line;
-	int			i;
+	char			**line;
 
 	line = ft_strsplit(str, ' ');
-	if (!(is_room(line)))
-	{
-		ft_printf("%s : %s\n", str, "BAD FORMAT!");
-		return (NULL);
-	}
-	i = 0;
+	validate_room(line, rooms);
+	while (rooms->next != NULL)
+		rooms = rooms->next;
+	rooms->name = line[0];
+	rooms->coord_x = line[1];
+	rooms->coord_y = line[2];
 	if (start_end == 1)
 	{
-		rooms_tmp->start = 1;
-		rooms_tmp->length = 0;
+		rooms->start = 1;
+		rooms->length = 0;
 	}
 	else if (start_end == 2)
 	{
-		rooms_tmp->end = 1;
+		rooms->end = 1;
 	}
-	rooms_tmp->name = line[0];
-	rooms_tmp->coord_x = line[1];
-	rooms_tmp->coord_y = line[2];
-	return (rooms_tmp);
+	rooms->next = new_data_roomlist();
+	// rooms = rooms->next;
+	// ft_printf("Room: %s, coord:%s %s\n", rooms_tmp->name, rooms_tmp->coord_x, rooms_tmp->coord_y);
+	return ;
 }
 
-t_data		*parse_data(t_data_input *data_input)
+static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *room)
 {
-	t_data_room	*rooms;
-	t_data_link	*links;
-	t_data		*data_lim;
-	char		*start;
-	char		*end;
-
-	data_lim = new_datalist();
-	rooms = data_lim->rooms;
-	links = data_lim->links;
-	start = NULL;
-	end = NULL;
-	data_input = data_input->next;
 	while (data_input->str != NULL)
 	{
-		if (ft_strstr(data_input->str, "-") != NULL)
+		// не комментарий или левые команды
+		if (!(data_input->str[0] == '#' && ft_strcmp(data_input->str, "##start") != 0 &&
+			ft_strcmp(data_input->str, "##end") != 0))
 		{
-			links = parse_link(data_input->str, links, start, end);
-			links->next->next = new_data_linklist();
-			links = links->next->next;
-		}
-		else if (ft_strcmp(data_input->str, "##start") == 0 || ft_strcmp(data_input->str, "##end") == 0)
-		{
+			// если встретили минус, идем в другой цикл парсить линки
+			if (ft_strstr(data_input->str, "-") != NULL)
+				return (data_input);
+			// комнаты
 			if (ft_strcmp(data_input->str, "##start") == 0)
 			{
-				rooms = parse_room(data_input->next->str, 1, rooms);
-				start = rooms->name;
+				data_input = data_input->next;
+				push_room(data_input->str, 1, room);
 			}
 			else if (ft_strcmp(data_input->str, "##end") == 0)
 			{
-				rooms = parse_room(data_input->next->str, 2, rooms);
-				end = rooms->name;
+				data_input = data_input->next;
+				push_room(data_input->str, 2, room);
 			}
-			data_input = data_input->next;
-			rooms->next = new_data_roomlist();
-			rooms = rooms->next;
-		}
-		else
-		{//средние комнаты
-			rooms = parse_room(data_input->str, 0, rooms);
-			rooms->next = new_data_roomlist();
-			rooms = rooms->next;
+			else
+				push_room(data_input->str, 0, room);
 		}
 		data_input = data_input->next;
 	}
-	// заводим комнаты под ссылки, каждая ссылка имеет связь с двумя комнатами
-	data_lim = union_room_link(data_lim);
+	return (data_input);
+}
+
+t_data			*parse_data(t_data_input *data_input)
+{
+	t_data_room		*room;
+	t_data			*data_lim;
+	char			*str;
+	int				res;
+
+	data_lim = new_datalist();
+	room = data_lim->rooms;
+
+	res = is_positive_int(data_input->str);
+	ft_printf("*** int=%d ***\n", res);
+	if (res < 1)
+		terminate("Bad map: invalid lemin count");
+	data_input = parse_rooms(data_input->next, data_lim->rooms);
+	// parse_links(data_input, data_lim);
+
+	// // заводим комнаты под ссылки, каждая ссылка имеет связь с двумя комнатами
+	// data_lim = union_room_link(data_lim);
+	print_farm(data_lim);
 	return (data_lim);
 }
