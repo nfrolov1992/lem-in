@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 20:41:29 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/03 15:20:44 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/03 19:26:54 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,19 @@ int		is_positive_int(char *str)
 void			print_farm(t_data *data_lim)
 {
 	t_data_room	*rooms;
-	// t_data_link	*links;
+	t_data_link	*links;
 
 	rooms = data_lim->rooms;
+	links = data_lim->links;
 	while (rooms->next != NULL)
 	{
 		ft_printf("%6s %3s %3s %d %d length:%d\n", rooms->name, rooms->coord_x, rooms->coord_y, rooms->start, rooms->end, rooms->length);
 		rooms = rooms->next;
+	}
+	while (links->next != NULL)
+	{
+		ft_printf("%6s---%s  act=%d\n", links->from, links->to, links->act);
+		links = links->next;
 	}
 	return ;
 }

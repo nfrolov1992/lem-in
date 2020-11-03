@@ -8,9 +8,9 @@ t_data	*get_data_input(t_data_input *data_input)
 	tmp = data_input;
 	//временно для чтения данных из файла
 	int f;
-	// f = open("maps/test06.map", O_RDWR);
+	f = open("maps/test02.map", O_RDWR);
 	// f = open("maps/big/map_big_2", O_RDWR);
-	f = open("maps/big_sup/map_big_sup_6", O_RDWR);
+	// f = open("maps/invalid/room_coord_duplicated", O_RDWR);
 
 	//------------------------------------
 	// f убрать и поставить стандартный ввод 0

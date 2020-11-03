@@ -1,120 +1,23 @@
 #include "lem_in.h"
 
-//объеденяю комнат и ссылки в сылки
-// t_data			*union_room_link(t_data *data_lim)
-// {
-// 	t_data_room *rooms;
-// 	t_data_link *links;
-// 	t_data_room *from;
-// 	t_data_room *to;
 
-// 	rooms = data_lim->rooms;
-// 	links = data_lim->links;
-// 	while (links->next != NULL)
-// 	{
-// 		while (rooms->next != NULL)
-// 		{
-// 			if (ft_strcmp(rooms->name, links->from) == 0)
-// 			{
-// 				from = rooms;
-// 				links->from_room = from;
-// 				links->next->to_room = from;
-// 			}
-// 			else if (ft_strcmp(rooms->name, links->to) == 0)
-// 			{
-// 				to = rooms;
-// 				links->to_room = to;
-// 				links->next->from_room = to;
-// 			}
-// 			if (links->from_room != NULL && links->to_room != NULL)
-// 				break;
-// 			rooms = rooms->next;
-// 		}
-// 		rooms = data_lim->rooms;
-// 		links = links->next->next;
-// 	}
-// 	links = data_lim->links;
-// 	while (links->next != NULL)
-// 	{
-// 		if (links->from_room->start == 1 || links->from_room->end == 1)
-// 			data_lim->count_way++;
-// 		links = links->next;
-// 	}
-// 	return (data_lim);
-// }
+static void		check_start_end(t_data_room *rooms)
+{
+	int			start;
+	int			end;
 
-// t_data_link		*parse_link(char *str, t_data *data_lim)
-// {
-// 	char			**line;
-// 	t_data_link		*links;
-// 	char			*l1;
-// 	char			*l2;
-
-// 	links = data_lim->links;
-// 	line = ft_strsplit(str, '-');
-// 	if (line[0] == NULL || line[1] == NULL || line[3] != NULL ||
-// 			ft_strlen(line[0]) == 0 || ft_strlen(line[1]) == 0)
-// 		terminate("Bad map: invalid link");
-
-// 	l1 = *line;
-// 	line++;
-// 	l2 = *line;
-
-// 	if (ft_strcmp(l1, start) == 0)
-// 	{
-// 		links->from = l1;
-// 		links->to = l2;
-// 		links->next = new_data_linklist();
-// 		links = links->next;
-// 		links->from = l2;
-// 		links->to = l1;
-// 		links->act = 0;
-// 	}
-// 	else if (ft_strcmp(l2, start) == 0)
-// 	{
-// 		links->from = l2;
-// 		links->to = l1;
-// 		links->next = new_data_linklist();
-// 		links = links->next;
-// 		links->from = l1;
-// 		links->to = l2;
-// 		links->act = 0;
-// 	}
-// 	else if (ft_strcmp(l1, end) == 0)
-// 	{
-// 		links->from = l2;
-// 		links->to = l1;
-// 		links->next = new_data_linklist();
-// 		links = links->next;
-// 		links->from = l1;
-// 		links->to = l2;
-// 		links->act = 0;
-// 	}
-// 	else if (ft_strcmp(l2, end) == 0)
-// 	{
-// 		links->from = l1;
-// 		links->to = l2;
-// 		links->next = new_data_linklist();
-// 		links = links->next;
-// 		links->from = l2;
-// 		links->to = l1;
-// 		links->act = 0;
-// 	}
-// 	else
-// 	{
-// 		links->from = l1;
-// 		links->to = l2;
-// 		links->next = new_data_linklist();
-// 		links = links->next;
-// 		links->from = l2;
-// 		links->to = l1;
-// 	}
-	
-
-// 	return (data_lim);
-// }
-
-
+	start = 0;
+	end = 0;
+	while (rooms->next != NULL)
+	{
+		start += rooms->start;
+		end += rooms->end;
+		rooms = rooms->next;
+	}
+	if (start != 1 || end != 1)
+		terminate("Bad map. Start/End missing or duplicates");
+	return ;
+}
 
 static void		validate_room(char **line, t_data_room *rooms)
 {
@@ -122,6 +25,8 @@ static void		validate_room(char **line, t_data_room *rooms)
 		terminate("Bad map: wrong number of fields in room definition");
 	if (ft_strlen(line[0]) == 0)
 		terminate("Bad map: missing room name");
+	if (line[0][0] == 'L')
+		terminate("Bad map: incorrect room name starts with L");
 	if ((is_positive_int(line[1]) < 0) || (is_positive_int(line[2]) < 0))
 	{
 		ft_printf("%s %s %s\n", line[0], line[1], line[2]);
@@ -164,7 +69,7 @@ static void			push_room(char *str, int start_end, t_data_room *rooms)
 	return ;
 }
 
-static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *room)
+static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *rooms)
 {
 	while (data_input->str != NULL)
 	{
@@ -179,15 +84,15 @@ static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *room)
 			if (ft_strcmp(data_input->str, "##start") == 0)
 			{
 				data_input = data_input->next;
-				push_room(data_input->str, 1, room);
+				push_room(data_input->str, 1, rooms);
 			}
 			else if (ft_strcmp(data_input->str, "##end") == 0)
 			{
 				data_input = data_input->next;
-				push_room(data_input->str, 2, room);
+				push_room(data_input->str, 2, rooms);
 			}
 			else
-				push_room(data_input->str, 0, room);
+				push_room(data_input->str, 0, rooms);
 		}
 		data_input = data_input->next;
 	}
@@ -196,20 +101,18 @@ static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *room)
 
 t_data			*parse_data(t_data_input *data_input)
 {
-	t_data_room		*room;
 	t_data			*data_lim;
 	char			*str;
 	int				res;
 
 	data_lim = new_datalist();
-	room = data_lim->rooms;
-
 	res = is_positive_int(data_input->str);
 	ft_printf("*** int=%d ***\n", res);
 	if (res < 1)
-		terminate("Bad map: invalid lemin count");
+		terminate("Bad map: ants count must be positive int at first line");
 	data_input = parse_rooms(data_input->next, data_lim->rooms);
-	// parse_links(data_input, data_lim);
+	check_start_end(data_lim->rooms);
+	parse_links(data_input, data_lim);
 
 	// // заводим комнаты под ссылки, каждая ссылка имеет связь с двумя комнатами
 	// data_lim = union_room_link(data_lim);
