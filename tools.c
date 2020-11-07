@@ -53,7 +53,7 @@ void			print_farm(t_data *data_lim)
 	}
 	while (links->next != NULL)
 	{
-		ft_printf("%6s---%s  act=%d\n", links->from, links->to, links->act);
+		ft_printf("%6s-%s  act=%d\n", links->from, links->to, links->act);
 		links = links->next;
 	}
 	return ;

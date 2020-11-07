@@ -107,7 +107,7 @@ t_data			*parse_data(t_data_input *data_input)
 
 	data_lim = new_datalist();
 	res = is_positive_int(data_input->str);
-	ft_printf("*** int=%d ***\n", res);
+	ft_printf("*** Ants: %d ***\n", res);
 	if (res < 1)
 		terminate("Bad map: ants count must be positive int at first line");
 	data_input = parse_rooms(data_input->next, data_lim->rooms);

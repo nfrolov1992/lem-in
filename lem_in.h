@@ -79,6 +79,6 @@ void						run_lim_run(int count_lim, t_data_ways *ways);
 void						terminate(char *message);
 int							is_positive_int(char *str);
 void						print_farm(t_data *data_lim);
-t_data_input				*parse_links(t_data_input *data_input, t_data *data_lim);
+void						parse_links(t_data_input *data_input, t_data *data_lim);
 
 #endif
