@@ -6,23 +6,28 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:08:10 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/03 19:18:02 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/08 17:45:11 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-// 	links = data_lim->links;
-// 	while (links->next != NULL)
-// 	{
-// 		if (links->from_room->start == 1 || links->from_room->end == 1)
-// 			data_lim->count_way++;
-// 		links = links->next;
-// 	}
+static void			count_ways(t_data *data_lim)
+{
+	t_data_link		*links;
 
-/* добавляем ссылки на комнаты в линк. 										*/
-/* Если указанная в линке комната не найдена - выход "ошибка формата карты" 	*/
-static void			union_room_link(t_data_link *link, t_data_room *rooms, char **line)
+	links = data_lim->links;
+	while (links->next != NULL)
+	{
+		if (links->from_room->start == 1 || links->from_room->end == 1)
+			data_lim->count_way++;
+		links = links->next;
+	}
+	return ;
+}
+
+static void			union_room_link(t_data_link *link, t_data_room *rooms,
+					char **line)
 {
 	while (rooms->next != NULL)
 	{
@@ -51,9 +56,8 @@ static void			union_room_link(t_data_link *link, t_data_room *rooms, char **line
 	return ;
 }
 
-/* Links указывает на последний (пустой) элемент. Туда пишем очередной линк  */
-/* Rooms - первый елеметн списка комнат 									 */
-static t_data_link	*add_link(t_data_link *links, t_data_room *rooms, char **line)
+static t_data_link	*add_link(t_data_link *links, t_data_room *rooms,
+					char **line)
 {
 	links->from = line[0];
 	links->to = line[1];
@@ -67,7 +71,7 @@ static t_data_link	*add_link(t_data_link *links, t_data_room *rooms, char **line
 
 void				parse_links(t_data_input *data_input, t_data *data_lim)
 {
-	char        	**line;
+	char			**line;
 	t_data_link		*links;
 
 	links = data_lim->links;
@@ -79,7 +83,7 @@ void				parse_links(t_data_input *data_input, t_data *data_lim)
 		if (!(data_input->str[0] == '#'))
 		{
 			line = ft_strsplit(data_input->str, '-');
-			if (line[0] == NULL || line[1] == NULL || line[3] != NULL)
+			if (line[0] == NULL || line[1] == NULL || line[2] != NULL)
 				terminate("Bad map: invalid link format");
 			if (ft_strcmp(line[0], line[1]) == 0)
 				terminate("Bad map: link source and target are same");
@@ -87,5 +91,8 @@ void				parse_links(t_data_input *data_input, t_data *data_lim)
 		}
 		data_input = data_input->next;
 	}
+	if (data_lim->links->from == NULL)
+		terminate("Bad map: no links were founded");
+	count_ways(data_lim);
 	return ;
 }

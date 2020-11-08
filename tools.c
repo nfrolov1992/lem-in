@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 20:41:29 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/03 19:26:54 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/08 15:21:11 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	terminate(char *message)
 	exit(1);
 }
 
-// returns positive int or -1 if overflow or bad format
 int		is_positive_int(char *str)
 {
 	unsigned long	res;
@@ -39,7 +38,7 @@ int		is_positive_int(char *str)
 	return ((int)res);
 }
 
-void			print_farm(t_data *data_lim)
+void	print_farm(t_data *data_lim)
 {
 	t_data_room	*rooms;
 	t_data_link	*links;
@@ -48,7 +47,8 @@ void			print_farm(t_data *data_lim)
 	links = data_lim->links;
 	while (rooms->next != NULL)
 	{
-		ft_printf("%6s %3s %3s %d %d length:%d\n", rooms->name, rooms->coord_x, rooms->coord_y, rooms->start, rooms->end, rooms->length);
+		ft_printf("%6s %3s %3s %d %d length:%d\n", rooms->name, rooms->coord_x,
+			rooms->coord_y, rooms->start, rooms->end, rooms->length);
 		rooms = rooms->next;
 	}
 	while (links->next != NULL)

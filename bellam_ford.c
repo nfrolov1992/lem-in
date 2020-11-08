@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bellam_ford.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/08 14:32:39 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/08 14:37:31 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 void			bellamna_ford(t_data_room *rooms, t_data_link *links)
 {
-	t_data_room		*room_tmp;
 	t_data_link		*links_tmp;
 	int				change;
 
-	room_tmp = rooms;
 	links_tmp = links;
 	change = 0;
 	while (links->next != NULL)
 	{
 		if (links->act == 1)
 		{
-			if (links->weight + links->from_room->length < links->to_room->length)
+			if (links->weight + links->from_room->length <
+				links->to_room->length)
 			{
-				links->to_room->length = links->weight + links->from_room->length;
+				links->to_room->length =
+					links->weight + links->from_room->length;
 				links->to_room->from_link = links->from;
 				change = 1;
 			}

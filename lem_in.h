@@ -74,11 +74,12 @@ void						bellamna_ford(t_data_room *rooms, t_data_link *links);
 t_data_ways					*new_ways_datalist(void);
 t_ways						*new_wayslist(void);
 t_ways						*save_way(t_data_room *rooms);
-t_data						*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways);
+void						base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways);
 void						run_lim_run(int count_lim, t_data_ways *ways);
 void						terminate(char *message);
 int							is_positive_int(char *str);
 void						print_farm(t_data *data_lim);
 void						parse_links(t_data_input *data_input, t_data *data_lim);
+void    					clean_datalist(t_data *data_lim);
 
 #endif
