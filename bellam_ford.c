@@ -9,7 +9,7 @@ void			bellamna_ford(t_data_room *rooms, t_data_link *links)
 	room_tmp = rooms;
 	links_tmp = links;
 	change = 0;
-	while (links->next != NULL && room_tmp->next != NULL)
+	while (links->next != NULL)
 	{
 		if (links->act == 1)
 		{
@@ -22,11 +22,9 @@ void			bellamna_ford(t_data_room *rooms, t_data_link *links)
 			if (change == 1)
 			{
 				links = links_tmp;
-				room_tmp = room_tmp->next;
 				change = 0;
 			}
 		}
 		links = links->next;
 	}
-	
 }
