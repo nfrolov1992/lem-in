@@ -37,6 +37,6 @@ int					main(void)
 		run_lim_run((ft_atoi(data_input->str)), data_ways);
 	else
 		ft_printf("Пути НЕТ!!!!!!!!!!");
-	clean_datalists(data_lim, data_input);
+	clean_datalists(data_lim, data_input, data_ways);
 	return (0);
 }	     

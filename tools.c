@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 20:41:29 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/08 15:21:11 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:18:10 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	terminate(char *message)
 {
 	write(1, "\x1B[31m", 5);
 	ft_putendl(message);
+	write(1, "\x1b[37m", 5);
 	exit(1);
 }
 

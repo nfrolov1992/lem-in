@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:08:10 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/08 17:45:11 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/10 15:54:03 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,43 @@
 static void			count_ways(t_data *data_lim)
 {
 	t_data_link		*links;
+	int				count_in;
+	int				count_out;
 
 	links = data_lim->links;
+	count_in = 0;
+	count_out = 0;
+
 	while (links->next != NULL)
 	{
-		if (links->from_room->start == 1 || links->from_room->end == 1)
-			data_lim->count_way++;
+		if (links->from_room->start == 1)
+			count_in++;
+		if (links->from_room->end == 1)
+			count_out++;
 		links = links->next;
 	}
+	data_lim->count_way = (count_in < count_out) ? count_in : count_out;
 	return ;
 }
+// static void			count_ways(t_data *data_lim)
+// {
+// 	t_data_link		*links;
 
-static void			union_room_link(t_data_link *link, t_data_room *rooms,
-					char **line)
+// 	links = data_lim->links;
+// 	while (links->next != NULL)
+// 	{
+// 		if (links->from_room->start == 1 || links->from_room->end == 1)
+// 			data_lim->count_way++;
+// 		links = links->next;
+// 	}
+// 	return ;
+// }
+
+static void			union_room_link(t_data_link *link, t_data_room *rooms)
 {
 	while (rooms->next != NULL)
 	{
-		if (ft_strcmp(rooms->name, line[0]) == 0)
+		if (ft_strcmp(rooms->name, link->from) == 0)
 		{
 			link->from_room = rooms;
 			link->next->to_room = rooms;
@@ -40,7 +60,7 @@ static void			union_room_link(t_data_link *link, t_data_room *rooms,
 			else if (rooms->end)
 				link->act = 0;
 		}
-		if (ft_strcmp(rooms->name, line[1]) == 0)
+		if (ft_strcmp(rooms->name, link->to) == 0)
 		{
 			link->to_room = rooms;
 			link->next->from_room = rooms;
@@ -65,7 +85,8 @@ static t_data_link	*add_link(t_data_link *links, t_data_room *rooms,
 	links->next->from = line[1];
 	links->next->to = line[0];
 	links->next->next = new_data_linklist();
-	union_room_link(links, rooms, line);
+	free(line);
+	union_room_link(links, rooms);
 	return (links->next->next);
 }
 

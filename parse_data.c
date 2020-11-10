@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 14:51:06 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/08 17:35:15 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/10 13:11:31 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void			push_room(char *str, int start_end, t_data_room *rooms)
 	rooms->name = line[0];
 	rooms->coord_x = line[1];
 	rooms->coord_y = line[2];
+	free(line);
 	if (start_end == 1)
 	{
 		rooms->start = 1;
@@ -108,18 +109,14 @@ t_data				*parse_data(t_data_input *data_input)
 {
 	t_data			*data_lim;
 	char			*str;
-	// int				res;
 
+	data_lim = NULL;
 	data_lim = new_datalist();
-	// res = is_positive_int(data_input->str);
-	// ft_printf("*** Ants: %d ***\n", res);
-	// if (res < 1)
-	// 	terminate("Bad map: ants count must be positive int at first line");
 	if (is_positive_int(data_input->str) < 1)
 		terminate("Bad map: ants count must be positive int at first line");
 	data_input = parse_rooms(data_input->next, data_lim->rooms);
+
 	check_start_end(data_lim->rooms);
 	parse_links(data_input, data_lim);
-	// print_farm(data_lim);
 	return (data_lim);
 }
