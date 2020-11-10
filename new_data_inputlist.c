@@ -53,13 +53,12 @@ t_data	*new_datalist(void)
 {
 	t_data *new;
 
-	if (!(new = (t_data *)malloc(sizeof(t_data))))
-		terminate("Memory allocation error");
-	if (!(new->rooms = new_data_roomlist()))
-		terminate("Memory allocation error");
-	if (!(new->links = new_data_linklist()))
-		terminate("Memory allocation error");
-	new->count_way = 0;
+	if ((new = (t_data *)malloc(sizeof(t_data))))
+	{
+		new->rooms = NULL;
+		new->links = NULL;
+		new->count_way = 0;
+	}
 	return (new);
 }
 
@@ -71,6 +70,7 @@ t_data_ways	*new_ways_datalist(void)
 	{
 		new->length_way = 0;
 		new->first_way = 0;
+		new->go_way_e = 0;
 		new->way = NULL;
 		new->next_way = NULL;
 		new->prev_way = NULL;
@@ -90,6 +90,8 @@ t_ways	*new_wayslist(void)
 		new->end = 0;
 		new->no_use = 0;
 		new->way = NULL;
+		new->way_dop = NULL;
+		new->ch_way = 0;
 		new->start = 0;
 		new->lim = 0;
 		new->way_prev = NULL;

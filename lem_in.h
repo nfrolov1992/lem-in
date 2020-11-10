@@ -48,9 +48,11 @@ typedef struct				s_ways
 	int						end;
 	int						length_way;
 	int						start;
-	int						lim;
+	int					lim;
 	int						no_use;
+	int						ch_way;
 	struct s_ways			*way;
+	struct s_ways			*way_dop;
 	struct s_ways			*way_prev;
 }							t_ways;
 
@@ -58,11 +60,11 @@ typedef struct				s_data_ways
 {
 	int						length_way;
 	int						first_way;
+	int						go_way_e;
 	struct s_ways			*way;
 	struct s_data_ways		*next_way;
 	struct s_data_ways		*prev_way;
 }							t_data_ways;
-
 
 t_data_input				*new_data_inputlist(void);
 t_data						*get_data_input(t_data_input *data_input);
@@ -74,8 +76,8 @@ void						bellamna_ford(t_data_room *rooms, t_data_link *links);
 t_data_ways					*new_ways_datalist(void);
 t_ways						*new_wayslist(void);
 t_ways						*save_way(t_data_room *rooms);
-t_data						*base_setting(t_data *data_lim, t_ways *ways);
+t_data						*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways, t_data *data_lim);
 void						run_lim_run(int count_lim, t_data_ways *ways);
-void						terminate(char *message);
+t_data_ways					*mod_ways(t_data_ways *data_ways);
 
 #endif
