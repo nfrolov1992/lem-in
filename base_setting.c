@@ -1,48 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   base_setting.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 18:41:42 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/11 19:18:32 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-t_data	*base_setting(t_data_room *rooms, t_data_link *links, t_ways *ways)
+static void		reset_length(t_data_link *links)
 {
-	t_data_room		*rooms_tm;
-	t_data_link		*links_tm;
-	t_ways			*ways_tm;
-	t_data			*data_lim;
+	if (links->from_room->start == 1)
+	{
+		links->from_room->length = 0;
+		links->from_room->from_link = NULL;
+	}
+	else
+	{
+		links->from_room->length = 2000000000;
+		links->from_room->from_link = NULL;
+	}
+	if (links->to_room->start == 1)
+	{
+		links->to_room->length = 0;
+		links->to_room->from_link = NULL;
+	}
+	else
+	{
+		links->to_room->length = 2000000000;
+		links->to_room->from_link = NULL;
+	}
+}
 
-	rooms_tm = rooms;
-	links_tm = links;
+void			base_setting(t_data *data_lim, t_ways *ways)
+{
+	t_data_link		*links;
+	t_ways			*ways_tm;
+
+	links = data_lim->links;
 	ways_tm = ways;
-	data_lim = new_datalist();
 	while (links->next != NULL)
 	{
 		while (ways->way->name_room_way != NULL)
 		{
-			if (ways->end == 0 && ways->start == 0 && ((ft_strcmp(ways->name_room_way, links->to)) == 0 || (ft_strcmp(ways->name_room_way, links->from) == 0)))
+			if (ways->end == 0 && ways->start == 0 && \
+			((ft_strcmp(ways->name_room_way, links->to)) == 0 || \
+			(ft_strcmp(ways->name_room_way, links->from) == 0)))
 				links->act = 0;
 			ways = ways->way;
 		}
 		ways = ways_tm;
-		if (links->from_room->start == 1)
-		{
-			links->from_room->length = 0;
-			links->from_room->from_link = NULL;
-		}
-		else
-		{
-			links->from_room->length = 2000000000;
-			links->from_room->from_link = NULL;
-		}
-		if (links->to_room->start == 1)
-		{
-			links->to_room->length = 0;
-			links->to_room->from_link = NULL;
-		}
-		else
-		{
-			links->to_room->length = 2000000000;
-			links->to_room->from_link = NULL;
-		}
+		reset_length(links);
 		links = links->next;
 	}
-	data_lim->rooms = rooms_tm;
-	data_lim->links = links_tm;
-	return (data_lim);
+	return ;
 }

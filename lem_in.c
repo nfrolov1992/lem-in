@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 19:22:18 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/11 19:26:56 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-static int		search_count_way(t_data *data_lim)
+static int			search_count_way(t_data *data_lim)
 {
 	int				i;
 	int				j;
@@ -22,27 +34,27 @@ static int		search_count_way(t_data *data_lim)
 		}
 		links_tm = links_tm->next;
 	}
-		if (i <= j)
-			return (i);
-		return (j);
+	if (i <= j)
+		return (i);
+	return (j);
 }
 
-
-static t_data_ways		*go_search_way(t_data *data_lim, t_data_ways *data_ways, int count_way)
+static t_data_ways	*go_search_way(t_data *data_lim, t_data_ways *data_ways, \
+					int count_way)
 {
 	t_data_ways		*data_ways_tm;
 	int				i;
-	data_ways_tm = data_ways;
 
+	data_ways_tm = data_ways;
 	i = search_count_way(data_lim);
 	while (i > 0)
 	{
 		bellamna_ford(data_lim->rooms, data_lim->links);
-		data_ways->way = save_way(data_lim->rooms);  
+		data_ways->way = save_way(data_lim->rooms);
 		if (data_ways->way == NULL)
-			break;
+			break ;
 		data_ways->length_way = data_ways->way->length_way - 1;
-		data_lim = base_setting(data_lim->rooms, data_lim->links, data_ways->way);
+		base_setting(data_lim, data_ways->way);
 		data_ways->next_way = new_ways_datalist();
 		data_ways->next_way->prev_way = data_ways;
 		data_ways = data_ways->next_way;
@@ -52,7 +64,7 @@ static t_data_ways		*go_search_way(t_data *data_lim, t_data_ways *data_ways, int
 	return (data_ways_tm);
 }
 
-int						main(void)
+int					main(void)
 {
 	t_data_input	*data_input;
 	t_data			*data_lim;
@@ -70,5 +82,6 @@ int						main(void)
 	}
 	else
 		ft_printf("ERROR");
+	clean_datalists(data_lim, data_input, data_ways);
 	return (0);
-}	     
+}

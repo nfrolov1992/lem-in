@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   new_data_inputlist.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/08 14:45:43 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/08 14:48:12 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 t_data_input	*new_data_inputlist(void)
 {
-	t_data_input *new;
+	t_data_input	*new;
 
 	if ((new = (t_data_input *)malloc(sizeof(t_data_input))))
 	{
@@ -12,7 +24,7 @@ t_data_input	*new_data_inputlist(void)
 	return (new);
 }
 
-t_data_room	*new_data_roomlist(void)
+t_data_room		*new_data_roomlist(void)
 {
 	t_data_room *new;
 
@@ -31,7 +43,7 @@ t_data_room	*new_data_roomlist(void)
 	return (new);
 }
 
-t_data_link	*new_data_linklist(void)
+t_data_link		*new_data_linklist(void)
 {
 	t_data_link *new;
 
@@ -49,49 +61,15 @@ t_data_link	*new_data_linklist(void)
 	return (new);
 }
 
-t_data	*new_datalist(void)
+t_data			*new_datalist(void)
 {
-	t_data *new;
+	t_data	*new;
 
 	if ((new = (t_data *)malloc(sizeof(t_data))))
 	{
-		new->rooms = NULL;
-		new->links = NULL;
+		new->rooms = new_data_roomlist();
+		new->links = new_data_linklist();
 		new->count_way = 0;
-	}
-	return (new);
-}
-
-t_data_ways	*new_ways_datalist(void)
-{
-	t_data_ways *new;
-
-	if ((new = (t_data_ways *)malloc(sizeof(t_data_ways))))
-	{
-		new->length_way = 0;
-		new->first_way = 0;
-		new->way = NULL;
-		new->next_way = NULL;
-		new->prev_way = NULL;
-	}
-	return (new);
-}
-
-t_ways	*new_wayslist(void)
-{
-	t_ways *new;
-
-	if ((new = (t_ways *)malloc(sizeof(t_ways))))
-	{
-		new->name_room_way = NULL;
-		new->name_lim = NULL;
-		new->length_way = 0;
-		new->end = 0;
-		new->no_use = 0;
-		new->way = NULL;
-		new->start = 0;
-		new->lim = 0;
-		new->way_prev = NULL;
 	}
 	return (new);
 }
