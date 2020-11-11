@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 22:23:32 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/11 22:26:06 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
@@ -63,13 +75,23 @@ typedef struct				s_data_ways
 	struct s_data_ways		*prev_way;
 }							t_data_ways;
 
+typedef struct				s_way_param
+{
+	int						begin;
+	char					*baza;
+	struct s_data_room		*rooms;
+	struct s_data_room		*room_tm;
+	struct s_ways			*ways_tm;
+}							t_way_param;
+
 t_data_input				*new_data_inputlist(void);
 t_data						*get_data_input(t_data_input *data_input);
 t_data						*parse_data(t_data_input *data_input);
 t_data_room					*new_data_roomlist(void);
 t_data_link					*new_data_linklist(void);
 t_data						*new_datalist(void);
-void						bellamna_ford(t_data_room *rooms, t_data_link *links);
+void						bellamna_ford(t_data_room *rooms, \
+							t_data_link *links);
 t_data_ways					*new_ways_datalist(void);
 t_ways						*new_wayslist(void);
 t_ways						*save_way(t_data_room *rooms);
@@ -80,8 +102,9 @@ int							is_positive_int(char *str);
 int							is_good_int(char *str);
 int							looks_like_link(char *str);
 void						print_farm(t_data *data_lim);
-void						parse_links(t_data_input *data_input, t_data *data_lim);
-void    					clean_datalists(t_data *data_lim, t_data_input *data_input, \
-								t_data_ways *data_ways);
+void						parse_links(t_data_input *data_input, \
+							t_data *data_lim);
+void						clean_datalists(t_data *data_lim, \
+							t_data_input *data_input, t_data_ways *data_ways);
 
 #endif

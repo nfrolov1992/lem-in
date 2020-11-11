@@ -1,59 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   save_way.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 22:12:09 by fprovolo          #+#    #+#             */
+/*   Updated: 2020/11/11 22:16:21 by fprovolo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-t_ways	*save_way(t_data_room *rooms)
+t_ways		*way_set_end(t_ways *ways, t_way_param *param)
 {
-	t_ways			*ways;
-	t_ways			*ways_tm;
-	t_data_room		*room_tm;
-	int				begin;
-	char			*baza;
-	int				length;
+	param->begin = 1;
+	param->baza = param->rooms->from_link;
+	ways->name_room_way = param->rooms->name;
+	ways->end = 1;
+	ways->way = new_wayslist();
+	ways->way->way_prev = ways;
+	ways = ways->way;
+	ways->name_room_way = param->baza;
+	ways->way = new_wayslist();
+	ways = ways->way;
+	param->rooms = param->room_tm;
+	param->ways_tm->length_way = param->ways_tm->length_way + 2;
+	return (ways);
+}
 
-	begin = 0;
-	length = 0;
+t_ways		*way_set_step(t_ways *ways, t_way_param *param)
+{
+	if (ft_strcmp(param->baza, param->rooms->name) == 0 && \
+	param->rooms->start == 1)
+	{
+		ways->start = 1;
+		return (NULL);
+	}
+	param->baza = param->rooms->from_link;
+	ways->name_room_way = param->baza;
+	ways->way_prev = new_wayslist();
+	ways->way_prev->name_room_way = param->rooms->name;
+	ways->way = new_wayslist();
+	ways = ways->way;
+	param->rooms = param->room_tm;
+	param->ways_tm->length_way++;
+	return (ways);
+}
+
+t_ways		*save_way(t_data_room *rooms)
+{
+	t_way_param		param;
+	t_ways			*ways;
+
+	param.begin = 0;
+	param.baza = NULL;
+	param.rooms = rooms;
+	param.room_tm = rooms;
 	ways = new_wayslist();
-	ways_tm = ways;
-	room_tm = rooms;
-	baza = NULL;
+	param.ways_tm = ways;
 	while (TRUE)
 	{
-		if (begin == 0 && rooms->end == 1)
+		if (param.begin == 0 && param.rooms->end == 1)
+			ways = way_set_end(ways, &param);
+		else if (param.baza != NULL && ft_strequ(param.baza, param.rooms->name))
 		{
-			begin = 1;
-			baza = rooms->from_link;
-			ways->name_room_way = rooms->name;
-			ways->end = 1;
-			ways->way = new_wayslist();
-			ways->way->way_prev = ways;
-			ways = ways->way;
-			ways->name_room_way = baza;
-			ways->way = new_wayslist();
-			ways = ways->way;
-			rooms = room_tm;
-			length = length + 2;
+			ways = way_set_step(ways, &param);
+			if (ways == NULL)
+				break ;
 		}
-		else if (baza != NULL && ft_strcmp(baza, rooms->name) == 0)
-		{
-			
-			if (ft_strcmp(baza, rooms->name) == 0 && rooms->start == 1)
-			{
-				ways->start = 1;
-				break;
-			}
-			baza = rooms->from_link;
-			ways->name_room_way = baza;
-			ways->way_prev = new_wayslist();
-			ways->way_prev->name_room_way = rooms->name;
-			ways->way = new_wayslist();
-			ways = ways->way;
-			rooms = room_tm;
-			length++;
-		}
-		else if (rooms->name == NULL)
+		else if (param.rooms->name == NULL)
 			return (NULL);
 		else
-			rooms = rooms->next;
+			param.rooms = param.rooms->next;
 	}
-	ways_tm->length_way = length;
-	return (ways_tm);
+	return (param.ways_tm);
 }
