@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 18:41:42 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/11 19:18:32 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 20:18:32 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void			base_setting(t_data *data_lim, t_ways *ways)
 		while (ways->way->name_room_way != NULL)
 		{
 			if (ways->end == 0 && ways->start == 0 && \
-			((ft_strcmp(ways->name_room_way, links->to)) == 0 || \
-			(ft_strcmp(ways->name_room_way, links->from) == 0)))
+			((ft_strequ(ways->name_room_way, links->to)) || \
+			(ft_strequ(ways->name_room_way, links->from))))
 				links->act = 0;
 			ways = ways->way;
 		}

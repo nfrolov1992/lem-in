@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 22:26:43 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 19:46:56 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 19:45:23 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void			run_lim_run(int count_lim, t_data_ways *data_ways)
 				if (ways_tm->end == 1 && ways_tm->way->way->name_room_way == NULL)
 				{
 					lim_end++;
-					ft_printf("L%d-%s ", lim_start, ways_tm->name_room_way);
+					ft_printf("L%s-%s ", ft_itoa(lim_start), ways_tm->name_room_way);
 					lim_start--;
 				}
 				else if (ways_tm->end == 1 && ways_tm->way->lim == 1) // если есть лим в следующей комнате

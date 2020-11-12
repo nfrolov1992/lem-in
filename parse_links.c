@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:08:10 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/11 19:34:32 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 20:27:03 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void			union_room_link(t_data_link *link, t_data_room *rooms)
 {
 	while (rooms->next != NULL)
 	{
-		if (ft_strcmp(rooms->name, link->from) == 0)
+		if (ft_strequ(rooms->name, link->from))
 		{
 			link->from_room = rooms;
 			link->next->to_room = rooms;
@@ -39,7 +39,7 @@ static void			union_room_link(t_data_link *link, t_data_room *rooms)
 			else if (rooms->end)
 				link->act = 0;
 		}
-		if (ft_strcmp(rooms->name, link->to) == 0)
+		if (ft_strequ(rooms->name, link->to))
 		{
 			link->to_room = rooms;
 			link->next->from_room = rooms;
@@ -77,15 +77,15 @@ void				parse_links(t_data_input *data_input, t_data *data_lim)
 	links = data_lim->links;
 	while (data_input->str != NULL)
 	{
-		if (ft_strcmp(data_input->str, "##start") == 0 ||
-			ft_strcmp(data_input->str, "##end") == 0)
+		if (ft_strequ(data_input->str, "##start") ||
+			ft_strequ(data_input->str, "##end"))
 			terminate("ERROR\nStart/End command in link area");
 		if (!(data_input->str[0] == '#'))
 		{
 			line = ft_strsplit(data_input->str, '-');
 			if (line[0] == NULL || line[1] == NULL || line[2] != NULL)
 				terminate("ERROR\nInvalid link format");
-			if (ft_strcmp(line[0], line[1]) == 0)
+			if (ft_strequ(line[0], line[1]))
 				terminate("ERROR\nLink source and target are same");
 			links = add_link(links, data_lim->rooms, line);
 		}

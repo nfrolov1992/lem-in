@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 14:51:06 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/11 19:36:29 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 20:23:43 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static void			validate_room(char **line, t_data_room *rooms)
 		terminate("ERROR\nWrong room coordinates - must be integer");
 	while (rooms->next != NULL)
 	{
-		if (ft_strcmp(rooms->name, line[0]) == 0)
+		if (ft_strequ(rooms->name, line[0]))
 			terminate("ERROR\nRoom name duplicates");
-		if (ft_strcmp(rooms->coord_x, line[1]) == 0 &&
-			ft_strcmp(rooms->coord_y, line[2]) == 0)
+		if (ft_strequ(rooms->coord_x, line[1]) &&
+			ft_strequ(rooms->coord_y, line[2]))
 			terminate("ERROR\nRoom coordinates duplicate");
 		rooms = rooms->next;
 	}
@@ -82,17 +82,17 @@ static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *rooms)
 	while (data_input->str != NULL)
 	{
 		if (!(data_input->str[0] == '#' &&
-			ft_strcmp(data_input->str, "##start") != 0 &&
-			ft_strcmp(data_input->str, "##end") != 0))
+			!ft_strequ(data_input->str, "##start") &&
+			!ft_strequ(data_input->str, "##end")))
 		{
 			if (looks_like_link(data_input->str))
 				return (data_input);
-			if (ft_strcmp(data_input->str, "##start") == 0)
+			if (ft_strequ(data_input->str, "##start"))
 			{
 				data_input = data_input->next;
 				push_room(data_input->str, 1, rooms);
 			}
-			else if (ft_strcmp(data_input->str, "##end") == 0)
+			else if (ft_strequ(data_input->str, "##end"))
 			{
 				data_input = data_input->next;
 				push_room(data_input->str, 2, rooms);

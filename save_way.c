@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 22:12:09 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/11 22:16:21 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 20:12:15 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,15 @@ t_ways		*way_set_end(t_ways *ways, t_way_param *param)
 
 t_ways		*way_set_step(t_ways *ways, t_way_param *param)
 {
-	if (ft_strcmp(param->baza, param->rooms->name) == 0 && \
-	param->rooms->start == 1)
+	if (param->rooms->start == 1)
 	{
 		ways->start = 1;
 		return (NULL);
 	}
 	param->baza = param->rooms->from_link;
 	ways->name_room_way = param->baza;
-	ways->way_prev = new_wayslist();
-	ways->way_prev->name_room_way = param->rooms->name;
+	// ways->way_prev = new_wayslist();
+	// ways->way_prev->name_room_way = param->rooms->name;
 	ways->way = new_wayslist();
 	ways = ways->way;
 	param->rooms = param->room_tm;

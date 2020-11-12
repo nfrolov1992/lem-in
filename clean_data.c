@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 18:28:58 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/11 19:20:59 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/12 20:05:32 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ static void		clean_data_input(t_data_input *data_input)
 	{
 		while (data_input->next != NULL)
 		{
-			free(data_input->str);
 			tmp = data_input;
 			data_input = data_input->next;
+			if (tmp->str)
+				free(tmp->str);
 			free(tmp);
 		}
+		if (data_input->str)
+			free(data_input->str);
 		free(data_input);
 	}
 }
@@ -67,34 +70,69 @@ static void		clean_data_links(t_data_link *links)
 	}
 }
 
-static void		clean_ways(t_data_ways *data_ways)
+static void		clean_way(t_ways *way)
 {
-	t_ways		*way;
 	t_ways		*tmp;
-	t_data_ways	*tmp_ways;
+
+	if (way != NULL)
+	{
+		while (way->way != NULL)
+		{
+			tmp = way;
+			way = way->way;
+			free(tmp);
+		}
+		free(way);
+	}
+}
+
+static void		clean_dataways(t_data_ways *data_ways)
+{
+	t_data_ways		*dataway_tmp;
 
 	if (data_ways != NULL)
 	{
 		while (data_ways->next_way != NULL)
 		{
-			way = data_ways->way;
-			if (way != NULL)
-			{
-				while (way->way != NULL)
-				{
-					tmp = way;
-					way = way->way;
-					free(tmp);
-				}
-				free(way);
-			}
-			tmp_ways = data_ways;
+			dataway_tmp = data_ways;
 			data_ways = data_ways->next_way;
-			free(tmp_ways);
+			clean_way(dataway_tmp->way);
+			free(dataway_tmp);
 		}
+		clean_way(data_ways->way);
 		free(data_ways);
 	}
 }
+
+
+// static void		clean_ways(t_data_ways *data_ways)
+// {
+// 	t_ways		*way;
+// 	t_ways		*tmp;
+// 	t_data_ways	*tmp_ways;
+
+// 	if (data_ways != NULL)
+// 	{
+// 		while (data_ways->next_way != NULL)
+// 		{
+// 			way = data_ways->way;
+// 			if (way != NULL)
+// 			{
+// 				while (way->way != NULL)
+// 				{
+// 					tmp = way;
+// 					way = way->way;
+// 					free(tmp);
+// 				}
+// 				free(way);
+// 			}
+// 			tmp_ways = data_ways;
+// 			data_ways = data_ways->next_way;
+// 			free(tmp_ways);
+// 		}
+// 		free(data_ways);
+// 	}
+// }
 
 void			clean_datalists(t_data *data_lim, t_data_input *data_input, \
 				t_data_ways *data_ways)
@@ -104,7 +142,7 @@ void			clean_datalists(t_data *data_lim, t_data_input *data_input, \
 		clean_data_input(data_input);
 		clean_data_rooms(data_lim->rooms);
 		clean_data_links(data_lim->links);
-		clean_ways(data_ways);
+		clean_dataways(data_ways);
 		free(data_lim);
 	}
 }
