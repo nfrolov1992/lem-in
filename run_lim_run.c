@@ -6,16 +6,16 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 22:26:43 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 19:46:56 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/14 16:38:13 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int		is_go(t_data_ways *data_ways, int count_lim) //проверяет стоит ли идти в этот путь 1 - да, 0 - нет
+static int		is_go(t_data_ways *data_ways, int count_lim)
 {
-	int		length_way; // длина пути 
-	int		length_prev; // сумма предыдущих путей
+	int		length_way;
+	int		length_prev;
 	int		i;
 
 	length_way = data_ways->length_way;
@@ -27,7 +27,7 @@ static int		is_go(t_data_ways *data_ways, int count_lim) //проверяет с
 	{
 		i++;
 		data_ways = data_ways->prev_way;
-		length_prev = length_prev + data_ways->length_way; 
+		length_prev = length_prev + data_ways->length_way;
 	}
 	length_way = length_way * i;
 	if (count_lim > length_way - length_prev)
@@ -36,74 +36,61 @@ static int		is_go(t_data_ways *data_ways, int count_lim) //проверяет с
 		return (0);
 }
 
+static void		go_middle(t_ways *ways_tm, t_flags *flags)
+{
+	ways_tm->lim = 1;
+	ways_tm->name_lim = ways_tm->way->name_lim;
+	ways_tm->way->lim = 0;
+	ways_tm->way->name_lim = -1;
+	ft_printf("L%d-%s ", ways_tm->name_lim, ways_tm->name_room_way);
+}
+
+static void		next_ways(t_data_ways **data_ways, t_data_ways *data_ways_tm)
+{
+	*data_ways = data_ways_tm;
+	ft_printf("\n");
+}
+
+static void		route_lims(t_flags f, t_data_ways *d_way,
+				t_data_ways *d_way_tm, t_ways *way_m)
+{
+	while (f.lim_end != f.count_lim)
+	{
+		if (d_way->way == NULL && d_way->next_way == NULL)
+			next_ways(&d_way, d_way_tm);
+		if (d_way->length_way != 0)
+		{
+			way_m = d_way->way;
+			while (way_m->way->start != 1)
+			{
+				if (way_m->end == 1 && way_m->way->way->name_room_way == NULL)
+					start_end(way_m, &f);
+				else if (way_m->end == 1 && way_m->way->lim == 1)
+					go_end(way_m, &f);
+				else if (way_m->way->way->start == 1 && f.lim_start != 0 &&
+						((d_way->first_way == 1) || is_go(d_way, f.lim_start)))
+					go_out_start(way_m, &f);
+				else if (way_m->way->lim == 1)
+					go_middle(way_m, &f);
+				way_m = way_m->way;
+			}
+			d_way = d_way->next_way;
+		}
+		else
+			d_way = d_way->next_way;
+	}
+}
+
 void			run_lim_run(int count_lim, t_data_ways *data_ways)
 {
 	t_data_ways		*data_ways_tm;
 	t_ways			*ways_tm;
-	int				lim_end;
-	int				lim_start;
+	t_flags			flags;
 
+	flags.count_lim = count_lim;
 	data_ways_tm = data_ways;
-	lim_end = 0;
-	lim_start = count_lim;
-
-	//сразу определить первый путь добавить в структуру/
+	flags.lim_end = 0;
+	flags.lim_start = count_lim;
 	data_ways->first_way = 1;
-	while (lim_end != count_lim)
-	{
-		if (data_ways->way == NULL && data_ways->next_way == NULL)
-		{
-			data_ways = data_ways_tm;
-			ft_printf("\n");
-		}
-		if (data_ways->length_way != 0) // добавить в условие && is_go()
-		{
-			ways_tm = data_ways->way;
-			while (ways_tm->way->start != 1)
-			{
-				// находясь в комнате end,  смотрим в следующей комнате есть ли лим и взависимости от того есть или нет переносим или нет.
-				// if (ways_tm->end == 1 && ways_tm->way->lim == 0) // если нет лима, просто переходим
-				// 	ways_tm = ways_tm->way;
-				if (ways_tm->end == 1 && ways_tm->way->way->name_room_way == NULL)
-				{
-					lim_end++;
-					ft_printf("L%d-%s ", lim_start, ways_tm->name_room_way);
-					lim_start--;
-				}
-				else if (ways_tm->end == 1 && ways_tm->way->lim == 1) // если есть лим в следующей комнате
-				{
-					lim_end++;
-					ways_tm->name_lim = ways_tm->way->name_lim;
-					ways_tm->lim++;
-					ways_tm->way->lim = 0;
-					ways_tm->way->name_lim = NULL;
-					ft_printf("L%s-%s ", ways_tm->name_lim, ways_tm->name_room_way);
-				}
-				// если подошли к началу
-				else if (ways_tm->way->way->start == 1 && lim_start != 0 && ((data_ways->first_way == 1) || is_go(data_ways, lim_start)))
-				{
-					ways_tm->name_lim = ft_itoa(lim_start);
-					lim_start--;
-					ways_tm->lim = 1;
-					ft_printf("L%s-%s ", ways_tm->name_lim, ways_tm->name_room_way);
-				}
-				// середина пути
-				else if (ways_tm->way->lim == 1)
-				{
-					ways_tm->lim = 1;
-					ways_tm->name_lim = ways_tm->way->name_lim;
-					ways_tm->way->lim = 0;
-					ways_tm->way->name_lim = NULL;
-					ft_printf("L%s-%s ", ways_tm->name_lim, ways_tm->name_room_way);
-				}
-				
-				ways_tm = ways_tm->way;
-			}
-			data_ways = data_ways->next_way;
-		}
-		else
-		{
-			data_ways = data_ways->next_way;
-		}
-	}
+	route_lims(flags, data_ways, data_ways_tm, ways_tm);
 }

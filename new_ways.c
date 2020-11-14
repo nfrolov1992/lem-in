@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 14:43:34 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 19:45:23 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/14 14:50:31 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_ways		*new_wayslist(void)
 	if ((new = (t_ways *)malloc(sizeof(t_ways))))
 	{
 		new->name_room_way = NULL;
-		new->name_lim = NULL;
+		new->name_lim = -1;
 		new->length_way = 0;
 		new->end = 0;
 		new->no_use = 0;

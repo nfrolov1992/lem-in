@@ -6,31 +6,11 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 18:28:58 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 20:05:32 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/14 16:40:10 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-static void		clean_data_input(t_data_input *data_input)
-{
-	t_data_input	*tmp;
-
-	if (data_input != NULL)
-	{
-		while (data_input->next != NULL)
-		{
-			tmp = data_input;
-			data_input = data_input->next;
-			if (tmp->str)
-				free(tmp->str);
-			free(tmp);
-		}
-		if (data_input->str)
-			free(data_input->str);
-		free(data_input);
-	}
-}
 
 static void		clean_data_rooms(t_data_room *rooms)
 {
@@ -70,7 +50,7 @@ static void		clean_data_links(t_data_link *links)
 	}
 }
 
-static void		clean_way(t_ways *way)
+void			clean_way(t_ways *way)
 {
 	t_ways		*tmp;
 
@@ -103,36 +83,6 @@ static void		clean_dataways(t_data_ways *data_ways)
 		free(data_ways);
 	}
 }
-
-
-// static void		clean_ways(t_data_ways *data_ways)
-// {
-// 	t_ways		*way;
-// 	t_ways		*tmp;
-// 	t_data_ways	*tmp_ways;
-
-// 	if (data_ways != NULL)
-// 	{
-// 		while (data_ways->next_way != NULL)
-// 		{
-// 			way = data_ways->way;
-// 			if (way != NULL)
-// 			{
-// 				while (way->way != NULL)
-// 				{
-// 					tmp = way;
-// 					way = way->way;
-// 					free(tmp);
-// 				}
-// 				free(way);
-// 			}
-// 			tmp_ways = data_ways;
-// 			data_ways = data_ways->next_way;
-// 			free(tmp_ways);
-// 		}
-// 		free(data_ways);
-// 	}
-// }
 
 void			clean_datalists(t_data *data_lim, t_data_input *data_input, \
 				t_data_ways *data_ways)

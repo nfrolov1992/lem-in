@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 22:23:32 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 19:45:23 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/14 21:09:44 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct				s_data
 typedef struct				s_ways
 {
 	char					*name_room_way;
-	char					*name_lim;
+	int						name_lim;
 	int						end;
 	int						length_way;
 	int						start;
@@ -84,6 +84,13 @@ typedef struct				s_way_param
 	struct s_ways			*ways_tm;
 }							t_way_param;
 
+typedef struct				s_flags
+{
+	int						lim_start;
+	int						lim_end;
+	int						count_lim;
+}							t_flags;
+
 t_data_input				*new_data_inputlist(void);
 t_data						*get_data_input(t_data_input *data_input);
 t_data						*parse_data(t_data_input *data_input);
@@ -106,5 +113,10 @@ void						parse_links(t_data_input *data_input, \
 							t_data *data_lim);
 void						clean_datalists(t_data *data_lim, \
 							t_data_input *data_input, t_data_ways *data_ways);
+void						clean_way(t_ways *way);
+void						start_end(t_ways *ways_tm, t_flags *flags);
+void						go_end(t_ways *ways_tm, t_flags *flags);
+void						go_out_start(t_ways *ways_tm, t_flags *flags);
+void						clean_data_input(t_data_input *data_input);
 
 #endif

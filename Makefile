@@ -6,7 +6,7 @@
 #    By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/04 15:27:16 by tvanessa          #+#    #+#              #
-#    Updated: 2020/11/11 15:35:33 by fprovolo         ###   ########.fr        #
+#    Updated: 2020/11/14 16:44:53 by fprovolo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SS = $(S)lem_in.c \
 	$(S)base_setting.c \
 	$(S)run_lim_run.c \
 	$(S)clean_data.c \
-	$(S)tools.c
+	$(S)tools.c \
+	$(S)go_help.c
 
 H = -I libft/includes -I libft/ -I .
 NAME = lem-in
@@ -46,7 +47,6 @@ clean:
 
 fclean: clean
 	make -C libft/ fclean 
-	/bin/rm -f libft.a
 	/bin/rm -f $(NAME)
 
 re: fclean all

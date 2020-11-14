@@ -6,7 +6,7 @@
 /*   By: fprovolo <fprovolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 14:51:06 by fprovolo          #+#    #+#             */
-/*   Updated: 2020/11/12 20:23:43 by fprovolo         ###   ########.fr       */
+/*   Updated: 2020/11/14 14:15:16 by fprovolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ static t_data_input	*parse_rooms(t_data_input *data_input, t_data_room *rooms)
 t_data				*parse_data(t_data_input *data_input)
 {
 	t_data			*data_lim;
-	char			*str;
 
 	data_lim = NULL;
 	data_lim = new_datalist();
